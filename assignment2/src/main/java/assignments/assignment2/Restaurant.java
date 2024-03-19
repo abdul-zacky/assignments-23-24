@@ -69,6 +69,7 @@ public class Restaurant {
         }
     }
 
+    // Method untuk sort berdasarkan harga
     public static void sortPrice(ArrayList<Menu> listMenu) {
         for (int i = 0; i < listMenu.size() - 1; i++) {
             for (int j = 0; j < listMenu.size() - i - 1; j++) {
@@ -82,6 +83,7 @@ public class Restaurant {
         }
     }
 
+    // Method untuk sort menu dengan harga yang sama berdasarkan alfabet
     public static void sortAlphabet(ArrayList<Menu> listMenu) {
         for (int i = 0; i < listMenu.size() - 1; i++) {
             for (int j = 0; j < listMenu.size() - i - 1; j++) {
