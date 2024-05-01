@@ -1,10 +1,6 @@
 package assignments.assignment2;
-<<<<<<< HEAD
 
 import java.util.ArrayList;
-// import java.util.Collections;
-=======
->>>>>>> 1285504d2decc6c014c883956975c97d285a0497
 
 public class Restaurant {
     // Attributes

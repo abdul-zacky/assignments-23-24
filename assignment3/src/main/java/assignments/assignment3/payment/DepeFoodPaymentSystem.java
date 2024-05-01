@@ -1,7 +1,11 @@
 package assignments.assignment3.payment;
 
+import assignments.assignment2.User;
+
 public interface DepeFoodPaymentSystem {
-    //TODO implementasikan interface di sini
-    // Atribut harap mengikuti dokumen soal
-    // Anda dibebaskan untuk membuat method yang diperlukan
+    // Set default saldo jadi 0
+    public long saldo = 0;
+    // Method untuk melakukan payment
+    // Method ini tidak menggunakan amount sebagai parameter, tapi orderID dan user agar lebih fleksibel
+    public static void processPayment(String orderID, User user) {}
 }
