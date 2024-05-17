@@ -1,5 +1,6 @@
 package assignments.assignment3.payment;
 
+<<<<<<< HEAD
 import assignments.assignment2.User;
 import assignments.assignment2.Order;
 
@@ -23,5 +24,13 @@ public class CreditCardPayment implements DepeFoodPaymentSystem{
         order.setOrderFinished(true);
         System.out.println("Berhasil Membayar Bill sebesar Rp " + harga + " dengan biaya transaksi sebesar Rp " + biayaTransaksi);
         return;
+=======
+public class CreditCardPayment implements DepeFoodPaymentSystem {
+    private static final double TRANSACTION_FEE_PERCENTAGE = 0.02;
+
+    @Override
+    public long processPayment(long saldo, long amount) {
+        return amount + (long) (amount * TRANSACTION_FEE_PERCENTAGE);
+>>>>>>> 2de87934941926ea08452f88727b4221a5edf9d5
     }
 }

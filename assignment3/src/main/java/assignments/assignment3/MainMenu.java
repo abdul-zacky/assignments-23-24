@@ -3,9 +3,12 @@ package assignments.assignment3;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+<<<<<<< HEAD
 import assignments.assignment2.Restaurant;
 import assignments.assignment2.User;
 import assignments.assignment3.LoginManager;
+=======
+>>>>>>> 2de87934941926ea08452f88727b4221a5edf9d5
 import assignments.assignment3.payment.CreditCardPayment;
 import assignments.assignment3.payment.DebitPayment;
 import assignments.assignment3.systemCLI.AdminSystemCLI;
@@ -16,6 +19,7 @@ public class MainMenu {
     private final Scanner input;
     private final LoginManager loginManager;
     private static ArrayList<User> userList;
+    private static ArrayList<Restaurant> restoList;
 
     public MainMenu(Scanner in, LoginManager loginManager) {
         this.input = in;
@@ -24,8 +28,17 @@ public class MainMenu {
 
     public static void main(String[] args) {
         initUser();
+<<<<<<< HEAD
         MainMenu mainMenu = new MainMenu(new Scanner(System.in),
                 new LoginManager(new AdminSystemCLI(), new CustomerSystemCLI()));
+=======
+
+        restoList = new ArrayList<>();
+
+        MainMenu mainMenu = new MainMenu(new Scanner(System.in),
+                new LoginManager(new AdminSystemCLI(), new CustomerSystemCLI()));
+
+>>>>>>> 2de87934941926ea08452f88727b4221a5edf9d5
         mainMenu.run();
     }
 
@@ -46,11 +59,16 @@ public class MainMenu {
     }
 
     private void login() {
+<<<<<<< HEAD
+=======
+        UserSystemCLI system;
+>>>>>>> 2de87934941926ea08452f88727b4221a5edf9d5
         System.out.println("\nSilakan Login:");
         System.out.print("Nama: ");
         String nama = input.nextLine();
         System.out.print("Nomor Telepon: ");
         String noTelp = input.nextLine();
+<<<<<<< HEAD
         // Ubah nama dan nomor telpon ke dalam variabel bertipe User, jika tidak tersedia, akan bernilai null
         User userLoggedIn = getUser(nama, noTelp);
         if (userLoggedIn == null) {
@@ -71,6 +89,40 @@ public class MainMenu {
         }
     }
 
+=======
+
+        User userLoggedIn = getUser(nama, noTelp);
+
+        if (userLoggedIn == null) {
+            System.out.println("Pengguna dengan data tersebut tidak ditemukan!");
+            return;
+        }
+
+        System.out.printf("Selamat Datang %s!%n", userLoggedIn.getNama());
+
+        system = loginManager.getSystem(userLoggedIn.role);
+
+        system.setInput(input);
+        system.setUserLoggedIn(userLoggedIn);
+        system.setRestoList(restoList);
+        system.setUserList(userList);
+
+        system.run();
+    }
+
+    public static User getUser(String nama, String nomorTelepon) {
+
+        for (User user : userList) {
+            if (user.getNama().equals(nama.trim()) && user.getNomorTelepon().equals(nomorTelepon.trim())) {
+                return user;
+            }
+        }
+        return null;
+    }
+
+    
+
+>>>>>>> 2de87934941926ea08452f88727b4221a5edf9d5
     private static void printHeader() {
         System.out.println("\n>>=======================================<<");
         System.out.println("|| ___                 ___             _ ||");
@@ -92,7 +144,12 @@ public class MainMenu {
     }
 
     public static void initUser() {
+<<<<<<< HEAD
         userList = new ArrayList<User>();
+=======
+        userList = new ArrayList<>();
+
+>>>>>>> 2de87934941926ea08452f88727b4221a5edf9d5
         userList.add(
                 new User("Thomas N", "9928765403", "thomas.n@gmail.com", "P", "Customer", new DebitPayment(), 500000));
         userList.add(new User("Sekar Andita", "089877658190", "dita.sekar@gmail.com", "B", "Customer",
@@ -103,6 +160,7 @@ public class MainMenu {
                 new CreditCardPayment(), 1800000));
         userList.add(new User("Aurora Anum", "087788129043", "a.anum@gmail.com", "U", "Customer", new DebitPayment(),
                 650000));
+<<<<<<< HEAD
         userList.add(new User("Admin", "123456789", "admin@gmail.com", "-", "Admin", new CreditCardPayment(), 0));
         userList.add(
                 new User("Admin Baik", "9123912308", "admin.b@gmail.com", "-", "Admin", new CreditCardPayment(), 0));
@@ -115,5 +173,11 @@ public class MainMenu {
             }
         }
         return null;
+=======
+
+        userList.add(new User("Admin", "123456789", "admin@gmail.com", "-", "Admin", new CreditCardPayment(), 0));
+        userList.add(
+                new User("Admin Baik", "9123912308", "admin.b@gmail.com", "-", "Admin", new CreditCardPayment(), 0));
+>>>>>>> 2de87934941926ea08452f88727b4221a5edf9d5
     }
 }
