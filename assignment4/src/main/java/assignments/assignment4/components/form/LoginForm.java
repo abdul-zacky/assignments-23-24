@@ -29,8 +29,8 @@ public class LoginForm {
     }
 
     private Scene createLoginForm() {
-        // TODO: Implementasi method untuk menampilkan komponen form login
         GridPane grid = new GridPane();
+        // Set semua item di tengah
         grid.setAlignment(Pos.CENTER);
         grid.setPadding(new Insets(25, 25, 25, 25));
 
@@ -56,22 +56,23 @@ public class LoginForm {
         Button btn = new Button("Sign in");
         grid.add(btn, 1, 3);
 
+        // Add functions to the button
         btn.setOnAction(e -> {
             System.out.println("Sign in button pressed");
             handleLogin();
             clearLoginForm();
-            // Add authentication logic here
         });
         return new Scene(grid, 400, 600);
     }
 
     private void handleLogin() {
-        // TODO: Implementasi validasi isian form login
         User userLoggedIn = DepeFood.getUser(nameInput.getText(), phoneInput.getText());
+        // If else untuk ngecek validity user
         if (userLoggedIn != null) {
             System.out.println(userLoggedIn.role);
             switchSceneBasedOnRole(userLoggedIn.role, userLoggedIn);
         } else {
+            // Show error/alert message
             Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("Login Error");
             alert.setHeaderText(null); // No header text
@@ -86,6 +87,7 @@ public class LoginForm {
         phoneInput.setText("");
     }
 
+    // Method to get scene based on the role
     private void switchSceneBasedOnRole(String role, User userLoggedIn) {
         Scene newScene = null;
         switch (role) {

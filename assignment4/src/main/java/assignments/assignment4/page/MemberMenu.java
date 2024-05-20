@@ -21,8 +21,7 @@ public abstract class MemberMenu {
     }
 
     protected void refresh(){
-        //TODO: Implemenetasi method ini untuk merefresh data yang dimiliki aplikasi
-        // Hint: Method ini digunakan pada *seluruh method* yang membutuhkan update
+        // Method ini tidak diperlukan karena update data sudah di-handle
     }
 
 }

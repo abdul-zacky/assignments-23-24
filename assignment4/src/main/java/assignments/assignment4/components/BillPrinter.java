@@ -23,6 +23,7 @@ public class BillPrinter {
     private User user;
     private Scene backScene;
 
+    // Constructor
     public BillPrinter(Stage stage, MainApp mainApp, User user, Scene backScene) {
         this.stage = stage;
         this.mainApp = mainApp;
@@ -30,24 +31,33 @@ public class BillPrinter {
         this.backScene = backScene;
     }
 
+    // Bill printer form
     private Scene createBillPrinterForm() {
         VBox layout = new VBox(10);
         layout.setAlignment(Pos.CENTER);
+        // Set label, textfield, and buttons
         Label labelOrderID = new Label("Order ID:");
         TextField orderID = new TextField();
         Button printButton = new Button("Print Bill");
         Button backButton = new Button("Back");
+        // Add functions to the button
         printButton.setOnAction(e -> {
+            // If else to check if the order id is available
             if (getOrderOrNull(orderID.getText()) == null) {
                 showAlert("Error", "Not Found", "Order ID not found", "error");
+                // Clear orderID textfield
                 orderID.setText("");
             } else {
+                // Make a new Label object for the bill
                 Label printedBill = new Label(outputBillPesanan(getOrderOrNull(orderID.getText()), user));
+                // Clear the layout, and add the bill label to the layout
                 layout.getChildren().clear();
                 layout.getChildren().addAll(printedBill, backButton);
             }
         });
+        // Set functions to the back button
         backButton.setOnAction(e -> {
+            // Clear the current layout and add the previous label, textfield, and buttons
             layout.getChildren().clear();
             layout.getChildren().addAll(labelOrderID, orderID, printButton, backButton);
             orderID.setText("");
@@ -57,6 +67,7 @@ public class BillPrinter {
         return new Scene(layout, 400, 600);
     }
 
+    // Method from TP 2
     public static Order getOrderOrNull(String orderId) {
         for (Order order : User.getOrderHistory()) {
             System.out.println(order.getOrderId());
@@ -68,6 +79,7 @@ public class BillPrinter {
         return null;
     }
 
+    // Method from TP 2
     public static String outputBillPesanan(Order order, User userLoggedIn2) {
         DecimalFormat decimalFormat = new DecimalFormat();
         DecimalFormatSymbols symbols = new DecimalFormatSymbols();
@@ -90,6 +102,7 @@ public class BillPrinter {
                 decimalFormat.format(order.getTotalHarga()));
     }
 
+    // Method to show error/alert message
     public static void showAlert(String title, String header, String content, String type) {
         Alert alert;
         if (type.equalsIgnoreCase("error")) {

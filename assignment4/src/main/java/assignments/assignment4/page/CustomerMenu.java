@@ -42,6 +42,7 @@ public class CustomerMenu extends MemberMenu {
     // private List<Restaurant> restoList = new ArrayList<>();
     private User user;
 
+    // Constructor
     public CustomerMenu(Stage stage, MainApp mainApp, User user) {
         this.stage = stage;
         this.mainApp = mainApp;
@@ -61,16 +62,16 @@ public class CustomerMenu extends MemberMenu {
 
     @Override
     public Scene createBaseMenu() {
-        // TODO: Implementasikan method ini untuk menampilkan menu untuk Customer
         VBox menuLayout = new VBox(10);
+        // Set the layout to be centered
         menuLayout.setAlignment(Pos.CENTER);
-
+        // Set all the buttons
         Button addOrder = new Button("Make Order");
         Button printBill = new Button("Print Bill");
         Button payBill = new Button("Pay Bill");
         Button checkBalance = new Button("Check Balance");
         Button logoutButton = new Button("Log Out");
-
+        // Set functions to each button
         addOrder.setOnAction(e -> {
             createTambahPesananForm();
             mainApp.setScene(addOrderScene);
@@ -88,8 +89,9 @@ public class CustomerMenu extends MemberMenu {
             mainApp.setScene(cekSaldoScene);
         });
         logoutButton.setOnAction(e -> mainApp.logout());
-
+        // Add all buttons to the vbox
         menuLayout.getChildren().addAll(addOrder, printBill, payBill, checkBalance, logoutButton);
+        // Create a new Scene object to be set and returned later
         baseMenuScene = new Scene(menuLayout, 400, 600);
         setScene(baseMenuScene);
         return baseMenuScene;
@@ -97,7 +99,9 @@ public class CustomerMenu extends MemberMenu {
 
     private Scene createTambahPesananForm() {
         VBox menuLayout = new VBox(10);
+        // Set the layout to be centered
         menuLayout.setAlignment(Pos.CENTER);
+        // Set labels, combobox, listviews, and textfields
         Label labelRestaurant = new Label("Restaurant");
         ComboBox<String> comboBox = new ComboBox<>();
         for (Restaurant resto : AdminMenu.restoList) {
@@ -116,9 +120,13 @@ public class CustomerMenu extends MemberMenu {
 
         Button addButton = new Button("Add Order");
         Button backButton = new Button("Back");
+
+        // Set functions to each button
         menuButton.setOnAction(e -> {
+            // Clear the listview
             menuItemsListView.getItems().clear();
             Restaurant restaurant = AdminMenu.getRestaurantByName(comboBox.getValue());
+            // If else to check the availability of the restaurant
             if (restaurant != null) {
                 restaurant.getMenu().forEach(item -> {
                     menuItemsListView.getItems().add(item.getNamaMakanan());
@@ -130,6 +138,7 @@ public class CustomerMenu extends MemberMenu {
         menuItemsListView.setOnMouseClicked(e -> {
             if (e.getClickCount() == 1) { // Single click
                 String selectedItem = menuItemsListView.getSelectionModel().getSelectedItem();
+                // If to add the selected item to the clickedItems list
                 if (selectedItem != null && !clickedItems.contains(selectedItem)) {
                     clickedItems.add(selectedItem);
                     System.out.println("Added to clicked list: " + selectedItem);
@@ -137,10 +146,12 @@ public class CustomerMenu extends MemberMenu {
             }
         });
         addButton.setOnAction(e -> {
+            // If else to check the validity of the date
             if (!validateDate(date.getText())) {
                 AdminMenu.showAlert("Error", "Invalid Date", "Invalid Date, use DD/MM/YYYY",
                         "error");
             } else {
+                // Create a new Order object
                 Order order = new Order(
                         OrderGenerator.generateOrderID(comboBox.getValue().toUpperCase(), date.getText(),
                                 user.getNomorTelepon()),
@@ -149,10 +160,12 @@ public class CustomerMenu extends MemberMenu {
                         AdminMenu.getRestaurantByName(comboBox.getValue()),
                         getMenuRequest(AdminMenu.getRestaurantByName(comboBox.getValue()),
                                 clickedItems.stream().collect(Collectors.toList())));
+                // Add the order to the user object
                 user.addOrderHistory(order);
                 for (Order order2 : User.getOrderHistory()) {
                     System.out.println(order2.getOrderId());
                 }
+                // Show success message
                 AdminMenu
                         .showAlert(
                                 "Success", "Success",
@@ -165,6 +178,7 @@ public class CustomerMenu extends MemberMenu {
             back();
             date.clear();
         });
+        // Add labels, combobox, listviews, and textfields to the vbox
         menuLayout.getChildren().addAll(labelRestaurant, comboBox, labelDate, date, menuButton, menuItemsLabel,
                 menuItemsListView,
                 addButton, backButton);
@@ -177,9 +191,10 @@ public class CustomerMenu extends MemberMenu {
     }
 
     private Scene createBayarBillForm() {
-        // TODO: Implementasikan method ini untuk menampilkan page bayar bill
         VBox menuLayout = new VBox(10);
+        // Set the leyout to be centered
         menuLayout.setAlignment(Pos.CENTER);
+        // Set labels, combobox, and textfields
         Label orderIDLabel = new Label("Order ID:");
         TextField orderID = new TextField();
         ComboBox<String> comboBox = new ComboBox<>();
@@ -188,6 +203,7 @@ public class CustomerMenu extends MemberMenu {
         comboBox.getItems().add("Debit");
         Button payButton = new Button("Pay");
         Button backButton = new Button("Back");
+        // Add functions to each button
         payButton.setOnAction(e -> {
             handleBayarBill(orderID.getText(), comboBox.getValue());
             orderID.setText("");
@@ -197,17 +213,21 @@ public class CustomerMenu extends MemberMenu {
         backButton.setOnAction(e -> {
             back();
         });
+        // Add labels, combobox, and textfields to the vbox
         menuLayout.getChildren().addAll(orderIDLabel, orderID, comboBox, payButton, backButton);
         return new Scene(menuLayout, 400, 600);
     }
 
     private Scene createCekSaldoScene() {
         VBox menuLayout = new VBox(10);
+        // Set the layout to be centered
         menuLayout.setAlignment(Pos.CENTER);
+        // Set labels and buttons
         Label name = new Label(user.getNama());
         balanceLabel = new Label("Saldo: Rp " + user.getSaldo());
         Button backButton = new Button("Back");
         backButton.setOnAction(e -> back());
+        // Add labels and buttons to the vbox
         menuLayout.getChildren().addAll(name, balanceLabel, backButton);
         return new Scene(menuLayout, 400, 600);
     }
@@ -215,36 +235,41 @@ public class CustomerMenu extends MemberMenu {
     public void handleBayarBill(String orderId, String paymentOption) {
         Order order = assignments.assignment2.MainMenu.getOrderOrNull(orderId);
 
+        // If to check if the order id is available
         if (order == null) {
             showAlert("Error", "Not found", "This order ID was not found", "error");
             return;
         }
+        // If to check if the order is already paid
         if (order.getOrderFinished()) {
             showAlert("Paid", "Has been Paid", "This order has been Paid", "information");
             return;
         }
 
+        // Get the available payments for the user
         DepeFoodPaymentSystem paymentSystem = user.getPaymentSystem();
         boolean isCreditCard = paymentSystem instanceof CreditCardPayment;
 
+        // If to check the valid payment
         if ((isCreditCard && paymentOption.equals("Debit"))
                 || (!isCreditCard && paymentOption.equals("Credit Card"))) {
             showAlert("Error", "Not supported", "You don't have this type of payment", "error");
             return;
         }
 
+        // If else for each payment method
         if (paymentOption.equals("Debit")) {
             double harga = order.getTotalHarga();
-            // If else untuk ngecek jumlah saldo dan harga total yang mencukupi
+            // If else to check the minimmum spend and balance
             if (harga < 50000) {
-                showAlert("Error", "Not enough", "The total should not be less than 50000", "error");
+                showAlert("Error", "Not enough", "The spend should not be less than 50000", "error");
                 return;
             } else if (user.saldo < harga) {
                 showAlert("Error", "Not enough balance", "You don't have enough balance to pay", "error");
                 return;
             } else {
                 user.saldo -= harga;
-                // Set order jadi selesai
+                // Set the order to be finished
                 order.setOrderFinished(true);
                 showAlert("Success", "Payment Success", "Your Payment is successful", "info");
             }
@@ -263,10 +288,12 @@ public class CustomerMenu extends MemberMenu {
         }
     }
 
+    // Method to set the order to be finished
     public static void handleUpdateStatusPesanan(Order order) {
         order.setOrderFinished(true);
     }
 
+    // Method to show alert/error message
     public static void showAlert(String title, String header, String content, String type) {
         Alert alert;
         if (type.equalsIgnoreCase("error")) {
@@ -280,6 +307,7 @@ public class CustomerMenu extends MemberMenu {
         alert.showAndWait();
     }
 
+    // Method from previous TP
     public static Menu[] getMenuRequest(Restaurant restaurant, List<String> listMenuPesananRequest) {
         Menu[] menu = new Menu[listMenuPesananRequest.size()];
         for (int i = 0; i < menu.length; i++) {
@@ -292,6 +320,7 @@ public class CustomerMenu extends MemberMenu {
         return menu;
     }
 
+    // Method from previous TP
     public static boolean validateDate(String date) {
         String[] parts = date.split("/");
         if (parts.length != 3) {
@@ -304,14 +333,6 @@ public class CustomerMenu extends MemberMenu {
         }
         return parts[0].length() == 2 && parts[1].length() == 2 && parts[2].length() == 4;
     }
-
-    // public static String formatDate(String date) {
-    //     String[] parts = date.split("/");
-    //     String day = parts[0];
-    //     String month = parts[1];
-    //     String year = parts[2];
-    //     return day + month + year;
-    // }
 
     public void setScene(Scene scene) {
         stage.setScene(scene);
