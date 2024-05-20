@@ -1,23 +1,21 @@
 package assignments.assignment4.components.form;
 
-import assignments.assignment3.DepeFood;
-import assignments.assignment3.User;
-import javafx.geometry.HPos;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.geometry.VPos;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
+import assignments.assignment2.User;
+import assignments.assignment3.systemCLI.DepeFood;
 import assignments.assignment4.MainApp;
 import assignments.assignment4.page.AdminMenu;
 import assignments.assignment4.page.CustomerMenu;
-
-import java.util.function.Consumer;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 
 public class LoginForm {
     private Stage stage;
@@ -31,23 +29,81 @@ public class LoginForm {
     }
 
     private Scene createLoginForm() {
-        //TODO: Implementasi method untuk menampilkan komponen form login
+        // TODO: Implementasi method untuk menampilkan komponen form login
         GridPane grid = new GridPane();
+        grid.setAlignment(Pos.CENTER);
+        grid.setPadding(new Insets(25, 25, 25, 25));
 
+        // Add Username Label
+        Label userName = new Label("User Name:");
+        grid.add(userName, 0, 1);
+
+        // Add Username Text Field
+        TextField userTextField = new TextField();
+        nameInput = userTextField;
+        grid.add(userTextField, 1, 1);
+
+        // Add Password Label
+        Label pw = new Label("Password:");
+        grid.add(pw, 0, 2);
+
+        // Add Password Field
+        TextField pwBox = new PasswordField();
+        phoneInput = pwBox;
+        grid.add(pwBox, 1, 2);
+
+        // Add Login Button
+        Button btn = new Button("Sign in");
+        grid.add(btn, 1, 3);
+
+        btn.setOnAction(e -> {
+            System.out.println("Sign in button pressed");
+            handleLogin();
+            clearLoginForm();
+            // Add authentication logic here
+        });
         return new Scene(grid, 400, 600);
     }
 
-
     private void handleLogin() {
-        //TODO: Implementasi validasi isian form login
-        if (true) {
-
+        // TODO: Implementasi validasi isian form login
+        User userLoggedIn = DepeFood.getUser(nameInput.getText(), phoneInput.getText());
+        if (userLoggedIn != null) {
+            System.out.println(userLoggedIn.role);
+            switchSceneBasedOnRole(userLoggedIn.role, userLoggedIn);
         } else {
-
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Login Error");
+            alert.setHeaderText(null); // No header text
+            alert.setContentText("Error: User not found or wrong password.");
+            alert.showAndWait();
         }
     }
 
-    public Scene getScene(){
+    private void clearLoginForm() {
+        // Clear the form fields
+        nameInput.setText("");
+        phoneInput.setText("");
+    }
+
+    private void switchSceneBasedOnRole(String role, User userLoggedIn) {
+        Scene newScene = null;
+        switch (role) {
+            case "Admin":
+                newScene = new AdminMenu(stage, mainApp, userLoggedIn).getScene();
+                break;
+            case "Customer":
+                newScene = new CustomerMenu(stage, mainApp, userLoggedIn).getScene();
+                break;
+            default:
+                System.out.println("Unknown role: " + role);
+                return;
+        }
+        stage.setScene(newScene);
+        stage.show();
+    }
+
+    public Scene getScene() {
         return this.createLoginForm();
     }
 

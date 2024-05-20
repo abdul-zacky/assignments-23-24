@@ -1,20 +1,19 @@
-package assignments.assignment3;
+package assignments.assignment3.systemCLI;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.Scanner;
 
-import assignments.assignment1.OrderGenerator;
+import assignments.assignment2.OrderGenerator;
+import assignments.assignment2.Menu;
+import assignments.assignment2.Order;
+import assignments.assignment2.Restaurant;
+import assignments.assignment2.User;
 import assignments.assignment3.payment.CreditCardPayment;
 import assignments.assignment3.payment.DebitPayment;
 import assignments.assignment3.payment.DepeFoodPaymentSystem;
-import assignments.assignment3.systemCLI.AdminSystemCLI;
-import assignments.assignment3.systemCLI.CustomerSystemCLI;
-import assignments.assignment3.systemCLI.UserSystemCLI;
 
 public class DepeFood {
     private static ArrayList<User> userList;
@@ -192,13 +191,13 @@ public class DepeFood {
 
             long amountToPay = 0;
 
-            try {
-                amountToPay = paymentSystem.processPayment(userLoggedIn.getSaldo(), (long) order.getTotalHarga());
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-                System.out.println();
-                continue;
-            }
+            // try {
+            //     amountToPay = paymentSystem.processPayment(userLoggedIn.getSaldo(), (long) order.getTotalHarga());
+            // } catch (Exception e) {
+            //     System.out.println(e.getMessage());
+            //     System.out.println();
+            //     continue;
+            // }
 
             long saldoLeft = userLoggedIn.getSaldo() - amountToPay;
 

@@ -137,14 +137,14 @@ public class OrderGenerator {
         return code.substring(0, Math.min(code.length(), 4));
     }
 
-    // public static String formatDate(String date) {
-    //     String[] parts = date.split("/");
-    //     String day = parts[0];
-    //     String month = parts[1];
-    //     String year = parts[2];
+    public static String formatDate(String date) {
+        String[] parts = date.split("/");
+        String day = parts[0];
+        String month = parts[1];
+        String year = parts[2];
 
-    //     return day + month + year;
-    // }
+        return day + month + year;
+    }
 
     public static String getPhoneNumberChecksum(String phoneNumber) {
         int sum = 0;

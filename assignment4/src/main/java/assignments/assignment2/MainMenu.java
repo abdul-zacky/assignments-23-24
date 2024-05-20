@@ -213,14 +213,6 @@ public class MainMenu {
             }
         }
         return null;
-        // for (User user : userList) {
-        //     for (Order order : user.getOrderHistory()) {
-        //         if (order.getOrderId().equals(orderId)) {
-        //             return order;
-        //         }
-        //     }
-        // }
-        // return null;
     }
 
     public static void handleLihatMenu() {
